@@ -1435,7 +1435,7 @@ public class ZipArchiveOutputStream extends ArchiveOutputStream {
 
         // disk number start
         if(isSplitZip) {
-            if (ze.getDiskNumberStart() >= ZIP64_MAGIC_SHORT || zip64Mode == Zip64Mode.Always) {
+            if (ze.getDiskNumberStart() >= ZIP64_MAGIC_SHORT) {
                 putShort(ZIP64_MAGIC_SHORT, buf, CFH_DISK_NUMBER_OFFSET);
             } else {
                 putShort((int) ze.getDiskNumberStart(), buf, CFH_DISK_NUMBER_OFFSET);
@@ -1451,7 +1451,7 @@ public class ZipArchiveOutputStream extends ArchiveOutputStream {
         putLong(ze.getExternalAttributes(), buf, CFH_EXTERNAL_ATTRIBUTES_OFFSET);
 
         // relative offset of LFH
-        if (entryMetaData.offset >= ZIP64_MAGIC || zip64Mode == Zip64Mode.Always) {
+        if (entryMetaData.offset >= ZIP64_MAGIC) {
             putLong(ZIP64_MAGIC, buf, CFH_LFH_OFFSET);
         } else {
             putLong(Math.min(entryMetaData.offset, ZIP64_MAGIC), buf, CFH_LFH_OFFSET);
@@ -1488,10 +1488,10 @@ public class ZipArchiveOutputStream extends ArchiveOutputStream {
                 z64.setCompressedSize(null);
                 z64.setSize(null);
             }
-            if (lfhOffset >= ZIP64_MAGIC || zip64Mode == Zip64Mode.Always) {
+            if (lfhOffset >= ZIP64_MAGIC) {
                 z64.setRelativeHeaderOffset(new ZipEightByteInteger(lfhOffset));
             }
-            if (ze.getDiskNumberStart() >= ZIP64_MAGIC_SHORT || zip64Mode == Zip64Mode.Always) {
+            if (ze.getDiskNumberStart() >= ZIP64_MAGIC_SHORT) {
                 z64.setDiskStartNumber(new ZipLong(ze.getDiskNumberStart()));
             }
             ze.setExtra();
